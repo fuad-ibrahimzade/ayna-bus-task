@@ -1,0 +1,36 @@
+<div class="live-routes-page">
+  <div class="controls">
+    <h2>Live Bus Routes</h2>
+
+    <mat-form-field class="bus-select">
+      <mat-label>Select Bus Routes</mat-label>
+      <mat-select [(value)]="selectedBusIds" multiple (selectionChange)="onBusSelectionChange($event.value)">
+        @for (bus of busList; track bus.id) {
+          <mat-option [value]="bus.id">{{ bus.number }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <button (click)="clearAll()" class="clear-btn">Clear All</button>
+
+    @if (loadingList || loadingRoute) {
+      <mat-spinner diameter="24"></mat-spinner>
+    }
+  </div>
+
+  @if (error) {
+    <div class="error-banner">{{ error }}</div>
+  }
+
+  @if (selectedBusIds.length > 0) {
+    <div class="selected-routes">
+      @for (id of selectedBusIds; track id) {
+        <span class="route-chip">
+          {{ busList.find(b => b.id === id)?.number }}
+        </span>
+      }
+    </div>
+  }
+
+  <div id="live-routes-map" class="map-container"></div>
+</div>

@@ -1,0 +1,23 @@
+<div class="demographics-page">
+  <div class="controls">
+    <div class="control-group">
+      <label>Region Level:</label>
+      <mat-button-toggle-group [value]="level" (change)="onLevelChange($event.value)">
+        <mat-button-toggle value="micro">Micro</mat-button-toggle>
+        <mat-button-toggle value="meso">Meso</mat-button-toggle>
+        <mat-button-toggle value="macro">Macro</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="control-group">
+      <label>Data:</label>
+      <mat-button-toggle-group [value]="dataType" (change)="onDataTypeChange($event.value)">
+        <mat-button-toggle value="population">Population</mat-button-toggle>
+        <mat-button-toggle value="jobs">Jobs</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    @if (loading) {
+      <mat-spinner diameter="24"></mat-spinner>
+    }
+  </div>
+  <div id="demographics-map" class="map-container"></div>
+</div>
