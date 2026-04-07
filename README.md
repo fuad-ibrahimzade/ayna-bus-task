@@ -4,14 +4,14 @@ A 3-page web application for visualizing regional demographics, bus registration
 
 ## Architecture
 
-- **Backend**: Python Flask API
+- **Backend**: Python Flask API (serves both API and frontend static files)
 - **Frontend**: Angular with Angular Material + Leaflet maps
 
 ## Pages
 
 1. **Regional Demographics Map** - Interactive map displaying population and jobs data with Micro/Meso/Macro region toggle
 2. **Bus Registration & Volume Analytics** - Sortable/filterable table of bus check-in data
-3. **Live Route Visualization** - Map overlay of active bus routes scraped from map.ayna.gov.az
+3. **Live Route Visualization** - Map overlay of active bus routes from map.ayna.gov.az
 
 ## Setup
 
@@ -34,6 +34,7 @@ pip install -r requirements.txt
 ```bash
 cd frontend
 npm install
+npx ng build
 ```
 
 ## Running
@@ -46,23 +47,16 @@ npm install
 
 ### Option 2: Manual
 
-Terminal 1 (backend):
 ```bash
+cd frontend && npx ng build && cd ..
 source backend/venv/bin/activate
 python backend/app.py
 ```
 
-Terminal 2 (frontend):
-```bash
-cd frontend
-npx ng serve
-```
-
-- Backend: http://localhost:5000
-- Frontend: http://localhost:4200
+Open http://localhost:5000
 
 ## Data Sources
 
 - `data/zone_attributes_synthetic.gpkg` - GeoPackage with 1689 zones (population, jobs, Micro/Meso/Macro regions)
 - `data/ceck_in_buss.csv` - Bus check-in records (date, hour, route, counts, operator)
-- Live routes scraped from https://map.ayna.gov.az
+- Live routes from https://map.ayna.gov.az

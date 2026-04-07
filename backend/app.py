@@ -4,14 +4,14 @@ import os
 import sqlite3
 
 import requests
-from flask import Flask, jsonify, request
-from flask_cors import CORS
+from flask import Flask, jsonify, request, send_from_directory
 from shapely import wkb
 from shapely.geometry import shape
 from shapely.ops import unary_union
 
-app = Flask(__name__)
-CORS(app)
+STATIC_DIR = os.path.join(os.path.dirname(__file__), '..', 'frontend', 'dist', 'frontend', 'browser')
+
+app = Flask(__name__, static_folder=STATIC_DIR, static_url_path='')
 
 DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'data')
 GPKG_PATH = os.path.join(DATA_DIR, 'zone_attributes_synthetic.gpkg')
@@ -164,6 +164,14 @@ def get_bus_detail(bus_id):
         return jsonify({'error': 'Failed to fetch bus details'}), 502
     except requests.RequestException as e:
         return jsonify({'error': str(e)}), 502
+
+
+@app.route('/')
+@app.route('/<path:path>')
+def serve_frontend(path=''):
+    if path and os.path.exists(os.path.join(STATIC_DIR, path)):
+        return send_from_directory(STATIC_DIR, path)
+    return send_from_directory(STATIC_DIR, 'index.html')
 
 
 if __name__ == '__main__':
